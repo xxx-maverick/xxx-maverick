@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maverick | Logbook</title>
+    
+    <!-- Підключаємо Tailwind та моноширинний шрифт -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #0f0d0c;
+            --card-bg: rgba(26, 23, 21, 0.75);
+            --card-border: rgba(92, 82, 77, 0.4);
+            --accent-cream: #d4c5b9;
+            --accent-glow: rgba(212, 197, 185, 0.08);
+        }
+
+        body, text, fill {
+            background-color: var(--bg-dark);
+            color: #e4deda;
+            font-family: 'JetBrains Mono', monospace;
+            overflow-x: hidden;
+        }
+
+        /* Канвас для живого фону на весь екран */
+        #cyberCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Головний контейнер поверх фону */
+        .content-layer {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Кастомна картка */
+        .tactical-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            backdrop-filter: blur(8px);
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Лінія активації зліва при наведенні */
+        .tactical-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 0;
+            background-color: var(--accent-cream);
+            transition: width 0.2s ease;
+        }
+
+        .tactical-card:hover {
+            border-color: var(--accent-cream);
+            box-shadow: 0 12px 30px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
+        .tactical-card:hover::before {
+            width: 4px;
+        }
+
+        /* Аватар: збільшений масштаб та плавна анімація */
+        .avatar-container {
+            overflow: hidden;
+            border-radius: 9999px;
+        }
+        .avatar-target {
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            border-radius: 9999px;
+        }
+        .avatar-wrapper:hover .avatar-target {
+            transform: scale(1.08);
+        }
+
+        @keyframes TerminalBoot {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .boot-animate {
+            animation: TerminalBoot 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 relative">
+
+    <!-- Живий бекграунд терміналу -->
+    <canvas id="cyberCanvas"></canvas>
+
+    <!-- Шар контенту -->
+    <main class="max-w-2xl w-full flex flex-col items-center boot-animate py-8 content-layer">
+        
+        <!-- Контейнер аватара -->
+        <div class="avatar-wrapper relative mb-6 cursor-pointer flex justify-center items-center">
+            <div class="absolute -inset-3 bg-[#d4c5b9]/5 rounded-full blur-xl"></div>
+            <div class="avatar-container w-32 h-32 border border-[var(--card-border)] p-1 bg-[#171413] relative z-10">
+                <img src="image.jpg" 
+                     alt="Maverick" 
+                     class="avatar-target w-full h-full object-cover"
+                     onerror="this.src='https://via.placeholder.com/150/1c1816/d4c5b9?text=[M]'">
+            </div>
+        </div>
+
+        <!-- Головне інфо -->
+        <h1 class="text-3xl font-medium tracking-tight mb-2 text-white text-center">Маверік</h1>
+        <p class="text-xs text-[#a8998f] mb-8 tracking-widest text-center font-light">// xxx_maverick • OSINT ANALYST</p>
+
+        <!-- Опис -->
+        <div class="text-center mb-12 px-2 max-w-xl border-b border-dashed border-white/10 pb-8">
+            <p class="text-[#c2b6ae] font-light text-[14px] leading-relaxed">
+                Спеціалізуюся на зборі інформації з відкритих джерел, ідентифікації онлайн-загроз та кіберрозслідуваннях. Знаходжу те, що інші намагалися приховати.
+            </p>
+        </div>
+
+        <!-- АСИМЕТРИЧНА КАСКАДНА СІТКА -->
+        <div class="w-full space-y-4">
+            
+            <!-- Upper row -->
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                
+                <!-- БЛОК 01: Telegram -->
+                <a href="https://t.me/its_logbook" target="_blank" class="tactical-card md:col-span-3 flex flex-col justify-between p-5 rounded-none h-52 group">
+                    <div>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-[10px] text-[#a8998f] tracking-wider font-semibold">ГОЛОВНИЙ ПРОЕКТ //</span>
+                        </div>
+                        <span class="text-lg font-bold text-white block">Logbook (Telegram)</span>
+                        <span class="text-xs text-[#8c7e75] mt-2 block font-light leading-relaxed">
+                            Навчальні матеріали, авторські методики, practicalні кейси, GEOINT, OSINT, HUMINT та аналітичні дослідження.
+                        </span>
+                    </div>
+                    <span class="text-[10px] text-[#6e635c] tracking-wider group-hover:text-[var(--accent-cream)] transition-colors duration-200">t.me/its_logbook ↗</span>
+                </a>
+
+                <!-- БЛОК 02: YouTube -->
+                <a href="https://www.youtube.com/@xxx_maverick" target="_blank" class="tactical-card md:col-span-2 flex flex-col justify-between p-5 rounded-none h-52 group">
+                    <div>
+                        <span class="text-[10px] text-[#a8998f] tracking-wider block mb-3 font-semibold">ВІДЕОБЛОГ //</span>
+                        <span class="text-lg font-bold text-white block">YouTube</span>
+                    </div>
+                    <span class="text-xs text-[#8c7e75] font-light leading-relaxed my-2">
+                        Методички, кейси, огляди інструментів та практичний OSINT.
+                    </span>
+                    <span class="text-[10px] text-[#6e635c] tracking-wider group-hover:text-[var(--accent-cream)] transition-colors duration-200">youtube.com/@xxx_maverick ↗</span>
+                </a>
+
+            </div>
+
+            <!-- Lower row -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                
+                <!-- БЛОК 03: Teletype -->
+                <a href="https://teletype.in/@xxx_maverick" target="_blank" class="tactical-card md:col-span-2 flex flex-col justify-between p-5 rounded-none h-36 group">
+                    <div>
+                        <span class="text-[10px] text-[#a8998f] tracking-wider block mb-2 font-semibold">СТАТТІ ТА БЛОГ //</span>
+                        <span class="text-lg font-bold text-white block">Teletype</span>
+                    </div>
+                    <span class="text-xs text-[#8c7e75] font-light mb-1">Авторські статті та розгорнуті аналітичні матеріали.</span>
+                    <span class="text-[10px] text-[#6e635c] tracking-wider group-hover:text-[var(--accent-cream)] transition-colors duration-200">teletype.in/@xxx_maverick ↗</span>
+                </a>
+
+                <!-- БЛОК 04: Портфоліо -->
+                <div class="tactical-card md:col-span-1 flex flex-col justify-between p-5 rounded-none h-36 opacity-40 cursor-not-allowed">
+                    <div>
+                        <span class="text-[10px] text-[#6e635c] tracking-wider block mb-2 font-semibold">PORTFOLIO //</span>
+                        <span class="text-lg font-bold text-[#8c7e75] block">Портфоліо</span>
+                    </div>
+                    <span class="text-[10px] text-[#524943] font-light uppercase tracking-tight">[ ЗАКРИТО // У розробці ]</span>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ФУТЕР -->
+        <footer class="w-full flex flex-col items-center mt-16 space-y-4">
+            <span class="text-[9px] text-[#6e635c] tracking-widest uppercase">// ЗВ'ЯЗОК З МАВЕРІКОМ</span>
+            
+            <div class="flex items-center gap-6">
+                <a href="https://t.me/xxx_maverick" target="_blank" class="text-[#a8998f] hover:text-white transition duration-300 transform hover:scale-110" title="Написати в Telegram">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-1-.65-.35-1 .22-1.62.15-.15 2.7-2.48 2.75-2.7.01-.03.01-.14-.07-.2-.08-.07-.19-.04-.27-.03-.12.02-1.96 1.24-5.54 3.66-.52.36-1 .53-1.42.52-.47-.01-1.37-.26-2.03-.48-.82-.27-1.47-.42-1.42-.88.03-.24.35-.49.97-.74 3.79-1.65 6.32-2.74 7.59-3.27 3.61-1.5 4.36-1.76 4.85-1.77.11 0 .35.03.51.16.13.11.17.26.19.37.02.11.02.24.01.37z"/>
+                    </svg>
+                </a>
+
+                <a href="mailto:xxx.maverick.ua@gmail.com" class="text-[#a8998f] hover:text-white transition duration-300 transform hover:scale-110" title="Написати на Gmail">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                    </svg>
+                </a>
+            </div>
+
+            <p class="text-[9px] text-[#4d443f] tracking-widest pt-2">&copy; 2026 MAVERICK</p>
+        </footer>
+
+    </main>
+
+    <!-- СКРИПТ ГЕНЕРАЦІЇ ЖИВОГО ТАКТИЧНОГО ШУМУ -->
+    <script>
+        const canvas = document.getElementById('cyberCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        const numParticles = 40;
+        const particles = [];
+
+        for (let i = 0; i < numParticles; i++) {
+            particles.push({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                speed: 0.2 + Math.random() * 0.4,
+                size: Math.random() * 1.5 + 0.5,
+                alpha: Math.random() * 0.3 + 0.05
+            });
+        }
+
+        function drawBackground() {
+            const grad = ctx.createRadialGradient(width/2, height/4, 10, width/2, height/2, Math.max(width, height));
+            grad.addColorStop(0, '#1a1513');
+            grad.addColorStop(0.6, '#0f0d0c');
+            grad.addColorStop(1, '#060505');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, width, height);
+
+            ctx.strokeStyle = 'rgba(212, 197, 185, 0.02)';
+            ctx.lineWidth = 1;
+            const gridSize = 40;
+            
+            for (let x = 0; x < width; x += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, height);
+                ctx.stroke();
+            }
+            for (let y = 0; y < height; y += gridSize) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(width, y);
+                ctx.stroke();
+            }
+
+            ctx.fillStyle = '#d4c5b9';
+            particles.forEach(p => {
+                ctx.globalAlpha = p.alpha;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                p.y -= p.speed;
+                if (p.y < 0) {
+                    p.y = height;
+                    p.x = Math.random() * width;
+                }
+            });
+            
+            ctx.globalAlpha = 1.0;
+            requestAnimationFrame(drawBackground);
+        }
+
+        drawBackground();
+    </script>
+
+</body>
+</html>
